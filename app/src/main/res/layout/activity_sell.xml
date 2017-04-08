@@ -84,7 +84,7 @@
         android:text="Start Selling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/buybtn"
+        android:id="@+id/sellButton"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/timeInput"
         android:layout_marginBottom="113dp" />

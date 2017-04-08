@@ -22,37 +22,31 @@ public class Sell extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell);
 
-        Button sell = (Button) findViewById(R.id.buybtn);
+        Button sellButton = (Button) findViewById(R.id.sellButton);
 
-        sell.setOnClickListener(new View.OnClickListener() {
+        sellButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-
-
-            public void onClick(View v) {
-                getSellerDetails(v);
+            public void onClick(View view) {
+                getSellerDetails(view);
             }
-
-
         });
-
     }
     
     private void getSellerDetails( View view)
     {
         EditText dataInput = (EditText) findViewById(R.id.dataInput);
-        int data = Integer.parseInt(dataInput.getText().toString());
-
         EditText timeInput = (EditText) findViewById(R.id.timeInput);
-        int time = Integer.parseInt(timeInput.getText().toString());
-
         EditText rateInput = (EditText) findViewById(R.id.rateInput);
-        int rate = Integer.parseInt(rateInput.getText().toString());
 
         if(isEmpty(dataInput) || isEmpty(timeInput) || isEmpty(rateInput)) {
             Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        int data = Integer.parseInt(dataInput.getText().toString());
+        int time = Integer.parseInt(timeInput.getText().toString());
+        int rate = Integer.parseInt(rateInput.getText().toString());
         String password = randomString(9);
         Glob sellerGlob = new Glob(password, data, time, rate);
         String SSID = sellerGlob.getSSID();
