@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.lang.reflect.Method;
+import java.util.Random;
 
 public class Sell extends AppCompatActivity {
 
@@ -18,56 +20,11 @@ public class Sell extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell);
 
-        HotspotDataWrite();
+        getSellerDetails();
     }
-
-    private void HotspotDataWrite() {
-        WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
-
-        if(wifiManager.isWifiEnabled())
-        {
-            wifiManager.setWifiEnabled(false);
-        }
-
-
-        WifiConfiguration netConfig = new WifiConfiguration();
-
-
-        netConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-        netConfig.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-        netConfig.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-        netConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-        netConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-        netConfig.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-        netConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-        netConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-        netConfig.SSID = "EASi";
-        netConfig.preSharedKey = "Sharath";
-
-
-        try{
-
-            Method setWifiApMethod = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
-            boolean apstatus=(Boolean) setWifiApMethod.invoke(wifiManager, netConfig,true);
-
-            Method isWifiApEnabledmethod = wifiManager.getClass().getMethod("isWifiApEnabled");
-            while(!(Boolean)isWifiApEnabledmethod.invoke(wifiManager)){};
-
-            Method getWifiApStateMethod = wifiManager.getClass().getMethod("getWifiApState");
-            int apstate=(Integer)getWifiApStateMethod.invoke(wifiManager);
-
-            Method getWifiApConfigurationMethod = wifiManager.getClass().getMethod("getWifiApConfiguration");
-            netConfig=(WifiConfiguration)getWifiApConfigurationMethod.invoke(wifiManager);
-
-            Log.i("Writing HotspotData", "\nSSID:"+netConfig.SSID+"\nPassword:"+netConfig.preSharedKey+"\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void getSellerDetails( View view) {
+    
+    private void getSellerDetails( View view)
+    {
         EditText dataInput = (EditText) findViewById(R.id.dataInput);
         int data = Integer.parseInt(dataInput.getText().toString());
 
@@ -77,28 +34,65 @@ public class Sell extends AppCompatActivity {
         EditText rateInput = (EditText) findViewById(R.id.rateInput);
         int rate = Integer.parseInt(rateInput.getText().toString());
 
-        Glob sellerGlob = new Glob(data, time, rate);
-        //AMSBMJ
-        String SSID = sellerGlob.SSID;
+        if(isEmpty(dataInput) || isEmpty(timeInput) || isEmpty(rateInput)) {
+            Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        String password = randomString(9);
+        Glob sellerGlob = new Glob(password, data, time, rate);
+        String SSID = sellerGlob.getSSID();
+        Toast.makeText(this, SSID, Toast.LENGTH_LONG).show();
+        //createHotspot(SSID, password);
+    }
 
+    private boolean isEmpty(EditText etText ) {
+        return etText.getText().toString().trim().length() == 0;
+    }
+
+    private String randomString(int length) {
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        String output = sb.toString();
+        return output;
     }
 }
 
 class Glob
 {
-    String password, SSID;
-    int rate, time, data;
-    protected Glob(int data, int time, int rate )
+    private String password, SSID;
+    private int rate, time, data;
+    public String getSSID() {
+        return SSID;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public int getRate() {
+        return rate;
+    }
+    public int getTime() {
+        return time;
+    }
+    public int getData() {
+        return data;
+    }
+    public Glob(String password, int data, int time, int rate )
     {
         this.password = password;
+        this.time = time;
         this.data = data;
         this.rate = rate;
         this.SSID = "";
         this.encrypt();
     }
 
-    protected Glob(String SSID)
+    public Glob(String SSID)
     {
         this.SSID = SSID;
         this.password = "";
@@ -110,7 +104,6 @@ class Glob
 
     private void encrypt()
     {
-        SSID = "";
         int shift = rate + time + data;
 
         for(int i = 0 ; i < password.length(); i++)
@@ -119,9 +112,10 @@ class Glob
         if(SSID.length() % 2 != 0)
             SSID += '.';
 
-        SSID = rate + SSID.substring(0,SSID.length()/2) + time + SSID.substring(SSID.length()/2) + data;
+        SSID = "AMBMJ" + rate + SSID.substring(0,SSID.length()/2) + time + SSID.substring(SSID.length()/2) + data;
     }
     private void decrypt() {
+        SSID = SSID.substring(5);
         for(int i = 0; i < SSID.length(); i++) {
             if(!Character.isDigit(SSID.charAt(i))) {
                 rate = Integer.parseInt(SSID.substring(0, i));
