@@ -1,12 +1,14 @@
 package com.money.wifi.wifimoney;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,7 +22,19 @@ public class Sell extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell);
 
-        getSellerDetails();
+        Button sell = (Button) findViewById(R.id.buybtn);
+
+        sell.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+
+            public void onClick(View v) {
+                getSellerDetails(v);
+            }
+
+
+        });
+
     }
     
     private void getSellerDetails( View view)
