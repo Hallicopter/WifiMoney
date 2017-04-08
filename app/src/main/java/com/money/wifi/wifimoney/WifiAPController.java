@@ -1,4 +1,4 @@
-package com.money.wifi.wifimoney;
+package com.example.shreyansh.hotspot;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,8 @@ public class WifiAPController extends Activity {
     public int b;
     public String password;
     public String APname;
+    public String SSID;
+    public String PSK;
 
     private static int g;
     private static int h;
@@ -116,8 +118,8 @@ public class WifiAPController extends Activity {
     }
 
     private void initWifiAPConfig(WifiConfiguration wifiConfiguration){
-        wifiConfiguration.SSID = "SomeName";
-        wifiConfiguration.preSharedKey = "SomeKey1";
+        wifiConfiguration.SSID = SSID;
+        wifiConfiguration.preSharedKey = PSK;
         wifiConfiguration.hiddenSSID = false;
         wifiConfiguration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
@@ -228,7 +230,7 @@ public class WifiAPController extends Activity {
     }
 
     public void wifiToggle(Context context) {
-        Intent v0 = new Intent(context, Sell.class);
+        //Intent v0 = new Intent(context, MainActivity.class);
     }
 
     public void wifiToggle(String apname, String pass, WifiManager wifiManager, Context context) {
@@ -239,6 +241,8 @@ public class WifiAPController extends Activity {
 
         this.APname = apname;
         this.password = pass;
+        this.SSID=apname;
+        this.PSK=pass;
         int v0 = this.wifiToggle() == this.b || this.wifiToggle() == this.a ? 1 : 0;
         if (v0 != 0) {
             v2 = false;
