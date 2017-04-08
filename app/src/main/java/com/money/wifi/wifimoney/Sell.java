@@ -72,14 +72,10 @@ public class Sell extends AppCompatActivity {
     public void createHotspot(String SSID, String password){
         Context context=getApplicationContext();
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.WRITE_SETTINGS)){
 
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_SETTINGS},
-                    121);
-        }
+        if(!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_SETTINGS))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_SETTINGS}, 121);
+
         WifiAPController wifiAPController = new WifiAPController();
         wifiAPController.wifiToggle(SSID, password, wifiManager, context);
     }
@@ -106,7 +102,7 @@ class Glob
         this.data = data;
         this.rate = rate;
         this.SSID = "";
-        this.shift = data - 5 * rate;
+        this.shift = getShift();
         this.encrypt();
     }
 
@@ -146,7 +142,7 @@ class Glob
             }
         }
 
-        shift = data - 5 * rate;
+        shift = getShift();
         int len = SSID.length();
         if(SSID.charAt(len - 1) == '.'){
             len--;
@@ -154,5 +150,9 @@ class Glob
         for(int i = 0; i < len; i++) {
             password += (char) (SSID.charAt(i) - shift);
         }
+    }
+
+    private int getShift(){
+        return (data + rate) % 5;
     }
 }

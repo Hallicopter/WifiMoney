@@ -1,4 +1,4 @@
-package com.example.shreyansh.hotspot;
+package com.money.wifi.wifimoney;
 
 import android.app.Activity;
 import android.content.Context;
