@@ -20,65 +20,73 @@
         android:layout_alignParentStart="true" />
 
     <EditText
+        android:id="@+id/dataInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:layout_marginTop="38dp"
-        android:id="@+id/dataCap"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/textView"
         android:layout_toEndOf="@+id/dataText" />
 
     <TextView
+        android:id="@+id/dataText"
         android:text="Data Limit (MB):"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dataText"
         tools:text="Data Limit (MB):"
         android:fontFamily="sans-serif"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textAlignment="viewStart"
-        android:layout_alignTop="@+id/dataCap"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/dataCap" />
+        android:layout_alignBaseline="@+id/dataInput"
+        android:layout_alignBottom="@+id/dataInput"
+        android:layout_alignParentStart="true" />
 
     <TextView
+        android:id="@+id/rateText"
         android:text="Rate (rupees):"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/rateText"
         tools:text="Rate (rupees):"
-        android:layout_below="@+id/dataText"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/editText5"
-        android:layout_toStartOf="@+id/dataCap" />
+        android:textSize="15sp"
+        android:layout_alignBaseline="@+id/rateInput"
+        android:layout_alignBottom="@+id/rateInput"
+        android:layout_alignParentStart="true" />
 
     <EditText
+        android:id="@+id/rateInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:layout_below="@+id/dataCap"
-        android:layout_toEndOf="@+id/dataText"
-        android:id="@+id/editText5" />
+        android:layout_below="@+id/dataInput"
+        android:layout_toEndOf="@+id/dataText" />
 
     <TextView
-        android:text="Time Limit (min):"
+        android:id="@+id/timeText"
+        android:text="Time Limit (mins):"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rateText"
-        android:layout_alignParentStart="true"
-        android:id="@+id/timeText"
-        android:layout_toStartOf="@+id/editText5"
-        android:layout_alignBottom="@+id/editText6" />
+        android:layout_alignBaseline="@+id/timeInput"
+        android:layout_alignBottom="@+id/timeInput"
+        android:layout_alignParentStart="true" />
 
     <EditText
+        android:id="@+id/timeInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:layout_below="@+id/editText5"
-        android:layout_toEndOf="@+id/rateText"
-        android:id="@+id/editText6" />
+        android:layout_below="@+id/rateInput"
+        android:layout_toEndOf="@+id/timeText" />
+
+    <Button
+        android:text="Start Selling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buybtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/timeInput"
+        android:layout_marginBottom="113dp" />
 
 </RelativeLayout>

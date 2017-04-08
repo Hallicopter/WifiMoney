@@ -13,7 +13,7 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
 
-        Button sell= (Button) findViewById(R.id.sellbtn);
+        Button sell = (Button) findViewById(R.id.sellbtn);
 
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
