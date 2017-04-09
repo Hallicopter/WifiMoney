@@ -13,12 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+
 
 import java.lang.reflect.Method;
 import java.util.Random;
 
 public class Sell extends AppCompatActivity {
-
+    String SSID, password;
+    int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +32,11 @@ public class Sell extends AppCompatActivity {
 
         sellButton.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(Sell.this,Sellerstatus.class);
+                startActivity(i);
                 getSellerDetails(view);
             }
         });
@@ -47,11 +54,25 @@ public class Sell extends AppCompatActivity {
 
         int data = Integer.parseInt(dataInput.getText().toString());
         int rate = Integer.parseInt(rateInput.getText().toString());
-        String password = randomString(9);
+        password = randomString(9);
         Glob sellerGlob = new Glob(password, data, rate);
-        String SSID = sellerGlob.getSSID();
+        SSID = sellerGlob.getSSID();
         Toast.makeText(this, SSID, Toast.LENGTH_LONG).show();
-        createHotspot(SSID, password);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        }else {
+            createHotspot();
+            //do something, permission was previously granted; or legacy device
+        }
+        createHotspot();
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Do something with granted permission
+            createHotspot();
+        }
     }
 
     private boolean isEmpty(EditText etText ) {
@@ -69,7 +90,8 @@ public class Sell extends AppCompatActivity {
         String output = sb.toString();
         return output;
     }
-    public void createHotspot(String SSID, String password){
+
+    public void createHotspot(){
         Context context=getApplicationContext();
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
@@ -81,7 +103,7 @@ public class Sell extends AppCompatActivity {
     }
 }
 
-class Glob
+/*class Glob
 {
     private String password, SSID;
     private int rate, data, shift;
@@ -155,4 +177,4 @@ class Glob
     private int getShift(){
         return (data + rate) % 5;
     }
-}
+}*/

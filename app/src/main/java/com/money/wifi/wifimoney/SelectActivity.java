@@ -27,6 +27,15 @@ public class SelectActivity extends AppCompatActivity {
 
         });
 
+        Button buy = (Button) findViewById(R.id.buybtn);
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(SelectActivity.this,Buyer.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
